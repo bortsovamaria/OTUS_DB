@@ -1,0 +1,88 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table Addresses {
+  id integer
+  country varchar
+  city varchar
+  street varchar
+  house integer
+  postcode integer
+}
+
+Table Category {
+  id integer
+  name varchar
+}
+
+Table Price {
+  id integer
+  value integer
+  currency varchar
+  discount integer
+}
+
+Table Providers {
+  id integer
+  name varchar
+  description varchar
+  address_id integer [ref: - Addresses.id]
+  license varchar
+}
+
+Table Makers {
+  id integer
+  name integer
+  address_id integer [ref: - Addresses.id]
+  description varchar
+  license varchar
+}
+
+
+Table Products {
+  id integer
+  name varchar
+  description varchar
+  price_id integer
+  category_id integer
+  maker_id integer
+  provider_id integer
+}
+
+Ref: Products.provider_id > Providers.id
+Ref: Products.maker_id > Makers.id
+Ref: Products.category_id <> Category.id
+Ref: Products.price_id > Price.id
+
+
+Table Search_queries {
+  id integer
+  count integer
+  link varchar
+}
+
+Table Buyers {
+  id integer
+  name varchar
+  address_id integer
+  gender varchar
+  age integer
+  search_querie_id integer
+}
+
+Ref: Buyers.address_id > Addresses.id
+Ref: Buyers.search_querie_id > Search_queries.id
+
+Table Purchases {
+  id integer
+  name varchar
+  buyer_id integer
+  product_id integer
+  date timestamp
+  address_delivery_id integer
+  guarantee varhcar
+}
+
+Ref: Purchases.buyer_id <> Buyers.id
+Ref: Purchases.product_id <> Products.id
+Ref: Purchases.address_delivery_id > Addresses.id
